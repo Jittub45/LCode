@@ -1,38 +1,28 @@
 class Solution {
-
-    boolean check(int[] nums, int count, int i, int dir){
-        int[] temp = nums.clone();
-        int idx = i;
-
-        while(idx >= 0 && idx < nums.length && count > 0){
-            if(temp[idx] > 0){
-                temp[idx]--;
-
-                if(temp[idx] == 0){
-                    count--;
-                }
-                dir *= -1;
-            }
-            idx += dir;
-        }
-        return count == 0;
-    }
     public int countValidSelections(int[] nums) {
+
         int n = nums.length;
-        int count = 0;
-        int ans = 0;
+        int result = 0, curr = 0, sum = 0;
+
         for(int i = 0; i < n; i++){
-            if(nums[i] > 0)
-                count++;
+            sum += nums[i];
         }
+        
         for(int i = 0; i < n; i++){
-            if(nums[i] == 0){
-                if(check(nums, count, i, -1))
-                    ans++;
-                if(check(nums, count, i, +1))
-                    ans++;
-            }
+            curr += nums[i];
+
+            int left = curr;
+            int right = sum - curr;
+
+            if(nums[i] != 0)                       
+                continue;
+
+            if(left == right)
+                result+= 2;
+
+            if(Math.abs(left - right) == 1)
+                result += 1;
         }
-        return ans;
+        return result;
     }
 }
